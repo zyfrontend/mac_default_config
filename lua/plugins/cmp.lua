@@ -41,6 +41,21 @@ local function mapping(is_cmdline)
         end
       end
     end, { "i", "c" }),
+    ["<Enter>"] = cmp.mapping(function(fallback)
+      if is_cmdline then
+        if cmp.visible() then
+          cmp.confirm()
+        else
+          fallback()
+        end
+      else
+        if cmp.visible() and has_words_before() then
+          cmp.confirm { select = true }
+        else
+          fallback()
+        end
+      end
+    end, { "i", "c" }),
     ["<S-Tab>"] = cmp.config.disable,
   }
 end
